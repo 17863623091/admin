@@ -8,6 +8,9 @@ import {state,mutations,getters} from './mutations'
 // import order from './modules/order'
 import cate from './modules/cate'
 import specs from './modules/specs'
+import vip from './modules/vip'
+import banner from './modules/banner'
+import goods from './modules/goods'
 
 export default new Vuex.Store({
     state,
@@ -16,6 +19,9 @@ export default new Vuex.Store({
     actions,
     modules:{
         cate,
-        specs
+        specs,
+        vip,
+        banner,
+        goods
     }
 })

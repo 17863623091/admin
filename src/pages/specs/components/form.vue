@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-dialog :title="info.title" :visible.sync="info.isShow">
+    <el-dialog :title="info.title" :visible.sync="info.isShow" @closed='closed'>
       <el-form :model="specs">
         <el-form-item label="规格名称" label-width="80px">
           <el-input v-model="specs.specsname" autocomplete="off"></el-input>
@@ -17,16 +17,18 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click='cancel'>取 消</el-button>
-        <el-button type="primary" @click="add">添加</el-button>
-        <el-button type="primary" @click='update'>修改</el-button>
+        <template>
+          <el-button @click='cancel'>取 消</el-button>
+          <el-button type="primary" @click="add" v-if='info.title=="添加规格"'>添加</el-button>
+          <el-button type="primary" @click='update' v-else>修改</el-button>
+        </template>
       </div>
     </el-dialog>
   </div>
 </template>
 
 <script>
-import {reqspecsAdd,reqspecsDetail} from '../../../utils/http'
+import {reqspecsAdd,reqspecsDetail,reqspecsUpdate} from '../../../utils/http'
 import { successAlert } from '../../../utils/alert';
 import { mapActions, mapGetters } from 'vuex';
 export default {
@@ -46,7 +48,8 @@ export default {
   },
   methods:{
       ...mapActions({
-          reqList:"specs/reqList"
+          reqList:"specs/reqList",
+          reqTotal:'specs/reqTotal'
       }),
     //   取消
       cancel(){
@@ -82,17 +85,37 @@ export default {
                   this.empty()
                   this.cancel()
                   this.reqList()
+                  this.reqTotal()
               }
           })
       },
       getOne(id){
           reqspecsDetail(id).then(res=>{
-              console.log(res)
+              this.specs = res.data.list[0]
+              console.log(this.specs)
+              // this.attrArr = JSON.parse(this.specs.attrs).map(item=>{
+              //   return {value:item}
+              // })
+              this.attrArr = JSON.parse(this.specs.attrs).map(item=>({value:item}))
+              console.log(this.attrArr)
           })
       },
     //   修改
     update(){
-        
+        this.specs.attrs = JSON.stringify(this.attrArr.map(item=>item.value))
+        reqspecsUpdate(this.specs).then(res=>{
+          if(res.data.code==200){
+            successAlert('修改成功')
+            this.empty()
+            this.cancel()
+            this.reqList()
+          }
+        })
+    },
+    closed(){
+      if(this.info.title=='编辑规格'){
+        this.empty()
+      }
     }
   }
 };

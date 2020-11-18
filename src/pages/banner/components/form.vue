@@ -1,31 +1,19 @@
 <template>
   <div>
     <el-dialog :title="info.title" :visible.sync="info.isShow" @closed='closed'>
-      <el-form :model="cate">
-        <el-form-item label="上级分类" label-width="120px">
-          <el-select v-model="cate.pid" placeholder="请选择">
-            <el-option label="顶级分类" :value="0"></el-option>
-            <el-option
-              :label="item.catename"
-              :value="item.id"
-              v-for="item in catelist"
-              :key="item.id"
-            ></el-option>
-          </el-select>
+      <el-form :model="banner">
+        <el-form-item label="标题" label-width="120px">
+          <el-input v-model="banner.title" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="分类名称" label-width="120px">
-          <el-input v-model="cate.catename" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="图片" label-width="120px" v-if="cate.pid != 0">
+        <el-form-item label="图片" label-width="120px">
           <div class="imgFile">
             <h3>+</h3>
-            <!-- imgUrl是生成的一个地址 -->
             <img v-if="imgUrl" :src="imgUrl" alt />
             <input type="file" class="inp" v-if="info.isShow" @change="selectFile" />
           </div>
         </el-form-item>
         <el-form-item label="状态" label-width="120px">
-          <el-switch v-model="cate.status" :active-value="1" inactive-value="2"></el-switch>
+          <el-switch v-model="banner.status" :active-value="1" inactive-value="2"></el-switch>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -40,15 +28,14 @@
 <script>
 import { errorAlert, successAlert } from "../../../utils/alert";
 import { mapActions, mapGetters } from "vuex";
-import { reqcateAdd, reqcateDetail ,reqcateUpdata} from "../../../utils/http";
+import { reqbannerAdd, reqbannerDetail ,reqbannerUpdate} from "../../../utils/http";
 import path from "path";
 export default {
   props: ["info"],
   data() {
     return {
-      cate: {
-        pid: "",
-        catename: "",
+      banner: {
+        title: "",
         img: null,
         status: 1
       },
@@ -57,18 +44,17 @@ export default {
   },
   computed: {
     ...mapGetters({
-      catelist: "cate/list"
+      bannerlist: "banner/list"
     })
   },
   methods: {
     ...mapActions({
-      reqList: "cate/reqList"
+      reqList: "banner/reqList"
     }),
-    //   清空cate
+    //   清空banner
     empty() {
-      this.cate = {
-        pid: "",
-        catename: "",
+      this.banner = {
+        title: "",
         img: null,
         status: 1
       };
@@ -97,11 +83,11 @@ export default {
 
       this.imgUrl = URL.createObjectURL(file);
 
-      this.cate.img = file;
+      this.banner.img = file;
     },
     add() {
-      console.log(this.cate);
-      reqcateAdd(this.cate).then(res => {
+      console.log(this.banner);
+      reqbannerAdd(this.banner).then(res => {
         if (res.data.code == 200) {
           successAlert("添加成功");
           this.empty();
@@ -112,14 +98,14 @@ export default {
     },
     getOne(id) {
       console.log(id);
-      reqcateDetail(id).then(res => {
-          this.cate = res.data.list
-          this.imgUrl = this.$imgPre + this.cate.img
-          this.cate.id = id
+      reqbannerDetail(id).then(res => {
+          this.banner = res.data.list
+          this.imgUrl = this.$imgPre + this.banner.img
+          this.banner.id = id
       });
     },
     updata(){
-        reqcateUpdata(this.cate).then(res=>{
+        reqbannerUpdate(this.banner).then(res=>{
             if(res.data.code==200){
                 successAlert('修改成功')
                 this.cancel()

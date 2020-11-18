@@ -1,21 +1,45 @@
-# admin
+#### 菜单管理
 
-> A Vue.js project
+增删改查  ok
 
-## Build Setup
+#### 角色管理
 
-``` bash
-# install dependencies
-npm install
+增删改查  ok
 
-# serve with hot reload at localhost:8080
-npm run dev
+#### 管理员管理
 
-# build for production with minification
-npm run build
+增删改查  ok
 
-# build for production and view the bundle analyzer report
-npm run build --report
-```
+#### 登录拦截
 
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+增删改查  ok
+
+#### 商品分类
+
+增删改查  ok
+
+#### 商品规格
+
+增删改查  ok
+
+#### 会员管理
+
+编辑  ok
+
+#### 轮播图管理
+
+增删改查  ok
+
+#### 商品管理
+
+静态页 ok  
+
+增删改  未完成
+
+#### 秒杀活动
+
+未完成
+
+#### 图表
+
+未完成

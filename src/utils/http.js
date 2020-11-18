@@ -301,8 +301,169 @@ export const reqspecsTotal = ()=>{
 // 商品规格请求一条数据
 export const reqspecsDetail=(id)=>{
     return axios({
-        url:'/api/specsinfo',
+        url:baseUrl+'/api/specsinfo',
         method:'get',
-        params:id
+        params:{
+            id:id
+        }
+    })
+}
+// 商品规格修改
+export const reqspecsUpdate=(specs)=>{
+    return axios({
+        url:baseUrl+'/api/specsedit',
+        method:'post',
+        data:qs.stringify(specs)
+    })
+}
+
+
+// 会员列表
+export const reqvipList=()=>{
+    return axios({
+        url:baseUrl+'/api/memberlist',
+        method:'get'
+    })
+}
+
+//会员详情
+export const reqvipDetail=(uid)=>{
+    return axios({
+        url:baseUrl+'/api/memberinfo',
+        method:'get',
+        params:{
+            uid:uid
+        }
+    })
+}
+
+//会员修改
+export const reqvipUpdate=(vip)=>{
+    return axios({
+        url:baseUrl+'/api/memberedit',
+        method:'post',
+        data:qs.stringify(vip)
+    })
+}
+
+
+
+// 轮播图列表
+export const reqbannerList=()=>{
+    return axios({
+        url:baseUrl+'/api/bannerlist',
+        method:'get'
+    })
+}
+
+// 轮播图添加
+export const reqbannerAdd=(banner)=>{
+    let d = new FormData()
+    for(let i in banner){
+        d.append(i,banner[i])
+    }
+    return axios({
+        url:baseUrl+'/api/banneradd',
+        method:'post',
+        data:d
+    })
+}
+
+//轮播图获取一条详情
+export const reqbannerDetail=(id)=>{
+    return axios({
+        url:baseUrl+'/api/bannerinfo',
+        method:'get',
+        params:{
+            id:id
+        }
+    })
+}
+
+// banner图修改
+export const reqbannerUpdate=(banner)=>{
+    let d = new FormData()
+    for(let i in banner){
+        d.append(i,banner[i])
+    }
+    return axios({
+        url:baseUrl+'/api/banneredit',
+        method:'post',
+        data:d
+    })
+}
+// 轮播图删除
+export const reqbannerDel=(id)=>{
+    return axios({
+        url:baseUrl+'/api/bannerdelete',
+        method:'post',
+        data:qs.stringify({
+            id:id
+        })
+    })
+}
+
+
+// 商品管理列表
+export const reqgoodsList=(p)=>{
+    return axios({
+        url:baseUrl+'/api/goodslist',
+        method:"get",
+        params:p
+    })
+}
+
+// 商品管理添加
+export const reqgoodsAdd=(goods)=>{
+    let d = new FormData()
+    for(let i in goods){
+        d.append(i,goods[i])
+    }
+    return axios({
+        url:baseUrl+'/api/goodsadd',
+        method:'post',
+        data:d
+    })
+}
+
+//商品总数
+export const reqgoodsTotal=()=>{
+    return axios({
+        url:baseUrl+'/api/goodscount',
+        method:'get'
+    })
+}
+// 商品获取一条数据
+export const reqgoodsDetail=(id)=>{
+    return axios({
+        url:baseUrl+'/api/goodsinfo',
+        method:'get',
+        data:qs.stringify({
+            id:id
+        })
+    })
+}
+
+// 商品修改
+export const reqgoodsUpdate=(goods)=>{
+    let d = new FormData()
+    for(let i in goods){
+        d.append(i,goods[i])
+    }
+    return axios({
+        url:baseUrl+'/api/goodsedit',
+        method:'post',
+        data:d
+    })
+}
+
+// 商品删除
+export const reqgoodsDel=(id)=>{
+    return axios({
+        url:baseUrl+'/api/goodsdelete',
+        method:'post',
+        data:qs.stringify({
+            id:id
+        })
     })
 }

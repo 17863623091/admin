@@ -1,7 +1,7 @@
 import {reqspecsList ,reqspecsTotal} from '../../utils/http'
 const state = {
     list:[],
-    size:5,
+    size:2,
     page:1,
     total:0
 }
@@ -51,7 +51,7 @@ const actions={
         })
     },
     // 修改页码
-    reqPage(context,page){
+    changePage(context,page){
         context.commit('changePage',page)
         context.dispatch('reqList')
     }
@@ -63,8 +63,8 @@ const getters={
     size(state){
         return state.size
     },
-    page(state){
-        return state.page
+    total(state){
+        return state.total
     }
 }
 

@@ -1,33 +1,39 @@
 <template>
   <div>
-    <el-table :data="list" border style="width: 100%">
-      <el-table-column prop="id" label="规格编号" width="180"></el-table-column>
-      <el-table-column prop="specsname" label="规格名称" width="180"></el-table-column>
-      <el-table-column prop="attrs" label="规格属性">
+    <el-table
+      :data="list"
+      style="width: 100%;margin-bottom: 20px;"
+      row-key="id"
+      border
+      default-expand-all
+      :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
+    >
+      <el-table-column prop="id" label="编号" sortable width="180"></el-table-column>
+      <el-table-column prop="title" label="轮播图标题" sortable width="180"></el-table-column>
+      <el-table-column prop="img" label="图片">
         <template slot-scope="scope">
-            <el-tag type="success" v-for='item in scope.row.attrs' :key='item'>{{item}}</el-tag>
+            <img :src="$imgPre + scope.row.img">
         </template>
       </el-table-column>
       <el-table-column prop="status" label="状态">
         <template slot-scope="scope">
-          <el-button type="primary" v-if='scope.row.status==1'>启用</el-button>
-          <el-button type="primary" disabled v-else>禁用</el-button>
+            <el-button type="primary" v-if='scope.row.status==1'>启用</el-button>
+            <el-button type="primary" disabled v-else>禁用</el-button>
         </template>
       </el-table-column>
-      <el-table-column prop label="操作">
+      <el-table-column label="操作">
         <template slot-scope="scope">
-          <el-button type="success" @click='edit(scope.row.id)'>编辑</el-button>
+          <el-button type="warning" @click="edit(scope.row.id)">编辑</el-button>
           <el-button type="danger" @click='del(scope.row.id)'>删除</el-button>
         </template>
       </el-table-column>
     </el-table>
-    <el-pagination background layout="prev, pager, next" :total="total" :page-size='size' @current-change="changePage"></el-pagination>
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import {reqspecsDel} from '../../../utils/http'
+import { reqbannerDel } from '../../../utils/http'
 import { successAlert,errorAlert } from '../../../utils/alert';
 export default {
   data() {
@@ -35,18 +41,13 @@ export default {
   },
   computed: {
     ...mapGetters({
-      list: "specs/list",
-      size: "specs/size",
-      total:'specs/total',
+      list: "banner/list"
     })
   },
   methods: {
     ...mapActions({
-      reqList: "specs/reqList",
-      reqTotal:'specs/reqTotal',
-      changePage:'specs/changePage'
+      reqList: "banner/reqList"
     }),
-    // 删除
     del(id){
         this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
         confirmButtonText: "确定",
@@ -54,12 +55,11 @@ export default {
         type: "warning"
       })
         .then(() => {
-          reqspecsDel(id).then(res => {
+          reqbannerDel(id).then(res => {
             console.log(res);
             if (res.data.code == 200) {
               successAlert('删除成功')
               this.reqList()
-              this.reqTotal()
             }else{
                 errorAlert(res.data.msg)
             }   
@@ -72,18 +72,20 @@ export default {
           });
         });
     },
-    // 编辑
     edit(id){
-        // 通知父组件
+        console.log(id)
         this.$emit('edit',id)
     }
   },
   mounted() {
     this.reqList();
-    this.reqTotal()
   }
 };
 </script>
 
-<style>
+<style scoped>
+img {
+  width: 100px;
+  height: 100px;
+}
 </style>

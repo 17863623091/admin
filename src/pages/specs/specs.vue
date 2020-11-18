@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-button type="primary" @click="add" class='btn'>添加</el-button>
-    <v-form :info='info' ref='form'></v-form>
+    <v-form :info="info" ref='form'></v-form>
     <v-list @edit='edit'></v-list>
   </div>
 </template>
