@@ -21,8 +21,9 @@ const mutations = {
 
 const actions={
     // 请求list
-    reqList(context){
-        reqspecsList({size:context.state.size,page:context.state.page}).then(res=>{
+    reqList(context,bool){
+        let parmas = bool?{}:{size:context.state.size,page:context.state.page}
+        reqspecsList(parmas).then(res=>{
             let list = res.data.list?res.data.list:[]
             // 请求当前页数据，如果当前页中list没有数据了，则访问上一页数据
             if(list.length==0&&context.state.page>1){

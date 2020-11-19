@@ -23,24 +23,26 @@ const actions={
     // 请求列表
     reqList(context){
         reqgoodsList({size:context.state.size,page:context.state.page}).then(res=>{
+            console.log(res)
             let list = res.data.list?res.data.list:[]
 
             if(list.length===0&&context.state.page>1){
-                context.commit('changeList', context.state.page-1)
+                context.commit('changePage', context.state.page-1)
                 context.dispatch('reqList')
+                return
             }
             context.commit('changeList',list)
         })
     },
     // 请求总数
-    reqTotal(){
+    reqTotal(context){
         reqgoodsTotal().then(res=>{
             context.commit('changeTotal',res.data.list[0].total)
         })
     },
     // 改变页码,重新获取当前页的数据
-    changePage(context){
-        context.commit('changPage',page)
+    changePage(context,page){
+        context.commit('changePage',page)
         context.dispatch('reqList')
     }
 }

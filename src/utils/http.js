@@ -438,9 +438,9 @@ export const reqgoodsDetail=(id)=>{
     return axios({
         url:baseUrl+'/api/goodsinfo',
         method:'get',
-        data:qs.stringify({
+        params:{
             id:id
-        })
+        }
     })
 }
 
@@ -461,6 +461,55 @@ export const reqgoodsUpdate=(goods)=>{
 export const reqgoodsDel=(id)=>{
     return axios({
         url:baseUrl+'/api/goodsdelete',
+        method:'post',
+        data:qs.stringify({
+            id:id
+        })
+    })
+}
+
+
+// 秒杀活动列表请求
+export const reqseckillList=()=>{
+    return axios({
+        url:baseUrl+'/api/secklist',
+        method:'get'
+    })
+}
+
+// 秒杀活动添加
+export const reqsekillAdd=(seckill)=>{
+    return axios({
+        url:baseUrl+'/api/seckadd',
+        method:'post',
+        data:qs.stringify(seckill)
+    })
+}
+
+// 秒杀活动获取一条信息
+export const reqseckillDetail=(id)=>{
+    return axios({
+        url:baseUrl+'/api/seckinfo',
+        method:"get",
+        params:{
+            id:id
+        }
+    })
+}
+
+// 秒杀活动修改
+export const reqseckillUpdate=(seckill)=>{
+    return axios({
+        url:baseUrl+'/api/seckedit',
+        method:'post',
+        data:qs.stringify(seckill)
+    })
+}
+
+// 秒杀活动删除
+export const reqseckillDel=(id)=>{
+    return axios({
+        url:baseUrl+'/api/seckdelete',
         method:'post',
         data:qs.stringify({
             id:id
