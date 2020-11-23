@@ -6,7 +6,6 @@
       row-key="id"
       border
       lazy
-      :load="load"
       :tree-props="{ children: 'children' }"
     >
       <el-table-column prop="title" label="活动名称" width="180">
@@ -18,9 +17,10 @@
         </template>
       </el-table-column>
       <el-table-column label="操作">
-        <template>
-            <el-button type="primary">编辑</el-button>
-            <el-button type="danger">删除</el-button>
+        <template slot-scope="scope">
+            <el-button type="primary" @click="edit(scope.row.id)">编辑</el-button>
+            <el-button type="danger" @click="del(scope.row.id)">删除</el-button>
+            {{scope.row}}
         </template>
       </el-table-column>
     </el-table>
@@ -29,6 +29,8 @@
 
 <script>
 import { mapActions, mapGetters } from "vuex";
+import { errorAlert, successAlert } from '../../../utils/alert';
+import {reqseckillDel} from '../../../utils/http'
 export default {
   computed: {
     ...mapGetters({
@@ -39,6 +41,30 @@ export default {
     ...mapActions({
       reqList: "seckill/reqList",
     }),
+    del(id){
+      this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          reqseckillDel(id).then(res=>{
+            if(res.data.code==200){
+              successAlert('删除成功')
+              // 刷新列表
+              this.reqList()
+            }
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });          
+        });
+    },
+    edit(id){
+      // 通知父组件
+      this.$emit('edit',id)
+    }
   },
   mounted() {
     this.reqList();

@@ -1,8 +1,8 @@
 <template>
   <div>
       <el-button type="primary" @click="add">添加</el-button>
-      <v-form :info='info'></v-form>
-      <v-list></v-list>
+      <v-form :info='info' ref='editDet'></v-form>
+      <v-list @edit='edit'></v-list>
   </div>
 </template>
 
@@ -17,7 +17,7 @@ export default {
     data(){
         return {
             info:{
-                isShow:true,
+                isShow:false,
                 title:'添加秒杀活动'
             }
         }
@@ -29,6 +29,14 @@ export default {
                 isShow:true,
                 title:'添加秒杀活动'
             }
+        },
+        edit(id){
+            this.info={
+                isShow:true,
+                title:'编辑秒杀活动'
+            }
+            // 调用子组件的方法
+            this.$refs.editDet.getOne(id)
         }
     },
     mounted(){
